@@ -5,7 +5,7 @@ ARG USER_HOME_DIR="/root"
 ARG SHA=beb91419245395bd69a4a6edad5ca3ec1a8b64e41457672dc687c173a495f034
 ARG BASE_URL=https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries
 
-ARG CLOUD_SDK_VERSION=161.0.0
+ARG CLOUD_SDK_VERSION=187.0.0
 
 RUN apt-get -qqy update && apt-get install -qqy \
         curl \
