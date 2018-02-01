@@ -1,8 +1,8 @@
 FROM openjdk:8-jdk
 
-ARG MAVEN_VERSION=3.5.0
+ARG MAVEN_VERSION=3.5.2
 ARG USER_HOME_DIR="/root"
-ARG SHA=beb91419245395bd69a4a6edad5ca3ec1a8b64e41457672dc687c173a495f034
+ARG SHA=707b1f6e390a65bde4af4cdaf2a24d45fc19a6ded00fff02e91626e3e42ceaff
 ARG BASE_URL=https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries
 
 ARG CLOUD_SDK_VERSION=187.0.0
@@ -14,14 +14,16 @@ RUN apt-get -qqy update && apt-get install -qqy \
         python-setuptools \
         apt-transport-https \
         openssh-client \
-        git \
-	&& mkdir -p /usr/share/maven /usr/share/maven/ref \
+        git 
+
+RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
   && curl -fsSL -o /tmp/apache-maven.tar.gz ${BASE_URL}/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
   && echo "${SHA}  /tmp/apache-maven.tar.gz" | sha256sum -c - \
   && tar -xzf /tmp/apache-maven.tar.gz -C /usr/share/maven --strip-components=1 \
   && rm -f /tmp/apache-maven.tar.gz \
-  && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn \
-  && export CLOUD_SDK_REPO="cloud-sdk-jessie" \
+  && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
+
+RUN export CLOUD_SDK_REPO="cloud-sdk-jessie" \
   && echo "deb https://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" > /etc/apt/sources.list.d/google-cloud-sdk.list \
   && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
   && apt-get update \
